@@ -15,12 +15,14 @@ interface CreateNoteResponse {
 
 export async function fetchNotes(
   search: string,
-  page: number
+  page: number,
+  perPage: number = 12
 ): Promise<FetchNotesResponse> {
   const response = await axios.get<FetchNotesResponse>(BASE_URL, {
-    params: { search, page },
+    params: { search, page, perPage },
     headers: { Authorization: `Bearer ${myKey}` },
   });
+
   return response.data;
 }
 

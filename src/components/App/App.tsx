@@ -8,7 +8,8 @@ import NoteList from '../NoteList/NoteList';
 import css from './App.module.css';
 import { useState } from 'react';
 import { deleteNote, fetchNotes } from '../services/noteService';
-import { useDebouncedCallback } from 'use-debounce';
+import Pagination from '../Pagination/Pagination';
+// import { useDebouncedCallback } from 'use-debounce';
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,21 +30,30 @@ export default function App() {
     },
   });
 
-  const updateSearchQuery = useDebouncedCallback(
-    (e: React.ChangeEvent) => setSearchQuery(),
-    300
-  );
+  const notes = data?.notes ?? [];
+  const totalPages = data?.totalPages ?? 1;
+
+  // const updateSearchQuery = useDebouncedCallback(
+  //   (e: React.ChangeEvent) => setSearchQuery(),
+  //   300
+  // );
 
   return (
     <>
       <div className={css.app}>
         <header className={css.toolbar}>
           {/* Компонент SearchBox */}
-          {/* Пагінація */}
+          {totalPages > 1 && (
+            <Pagination
+              totalPages={totalPages}
+              page={page}
+              onPageChange={newPage => setPage(newPage)}
+            />
+          )}
           {/* Кнопка створення нотатки */}
         </header>
-        {data?.notes && data?.notes.length > 0 && (
-          <NoteList onDelete={id => mutation.mutate(id)} notes={data.notes} />
+        {notes.length > 0 && (
+          <NoteList onDelete={id => mutation.mutate(id)} notes={notes} />
         )}
       </div>
     </>
