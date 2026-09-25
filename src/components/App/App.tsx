@@ -6,20 +6,23 @@ import {
 } from '@tanstack/react-query';
 import NoteList from '../NoteList/NoteList';
 import css from './App.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createNote, deleteNote, fetchNotes } from '../services/noteService';
 import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import type { NewNote } from '../types/note';
 import SearchBox from '../SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
+import toast, { Toaster } from 'react-hot-toast';
+import Loader from '../Loader/Loader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsmodalOpen] = useState(false);
 
-  const { data, isFetching } = useQuery({
+  const { data, isFetching, isError } = useQuery({
     queryKey: ['notes', searchQuery, page],
     queryFn: () => fetchNotes(searchQuery, page),
     placeholderData: keepPreviousData,
@@ -69,6 +72,12 @@ export default function App() {
     300
   );
 
+  useEffect(() => {
+    if (!isFetching && !isError && searchQuery && notes.length === 0) {
+      toast.error('No such note was found.');
+    }
+  }, [isFetching, isError, searchQuery, notes.length]);
+
   return (
     <>
       <div className={css.app}>
@@ -88,9 +97,24 @@ export default function App() {
             Create note +
           </button>
         </header>
-        {notes.length > 0 && (
-          <NoteList onDelete={handleDeleteNote} notes={notes} />
+
+        {/* {isFetching && <Loader />} */}
+
+        {isFetching ? (
+          <Loader />
+        ) : isError ? (
+          <ErrorMessage />
+        ) : (
+          notes.length > 0 && (
+            <NoteList onDelete={handleDeleteNote} notes={notes} />
+          )
         )}
+
+        <Toaster />
+
+        {/* {notes.length > 0 && (
+          <NoteList onDelete={handleDeleteNote} notes={notes} />
+        )} */}
       </div>
     </>
   );
