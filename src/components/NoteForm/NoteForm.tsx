@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import css from './NoteForm.module.css';
 import * as Yup from 'yup';
 import { useId } from 'react';
-import type { NewNote, NoteTag } from '../types/note';
+import type { NewNote, NoteTag } from '../../types/note';
 
 interface NoteFormProps {
   onClose: () => void;

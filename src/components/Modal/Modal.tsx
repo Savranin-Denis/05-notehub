@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import css from './Modal.module.css';
 import NoteForm from '../NoteForm/NoteForm';
 import React, { useEffect } from 'react';
-import type { NewNote } from '../types/note';
+import type { NewNote } from '../../types/note';
 
 interface ModalProps {
   onClose: () => void;

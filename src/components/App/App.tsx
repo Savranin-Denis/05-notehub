@@ -7,10 +7,10 @@ import {
 import NoteList from '../NoteList/NoteList';
 import css from './App.module.css';
 import { useEffect, useState } from 'react';
-import { createNote, deleteNote, fetchNotes } from '../services/noteService';
+import { createNote, deleteNote, fetchNotes } from '../../services/noteService';
 import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
-import type { NewNote } from '../types/note';
+import type { NewNote } from '../../types/note';
 import SearchBox from '../SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
 import toast, { Toaster } from 'react-hot-toast';
