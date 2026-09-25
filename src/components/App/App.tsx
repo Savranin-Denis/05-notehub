@@ -11,7 +11,8 @@ import { createNote, deleteNote, fetchNotes } from '../services/noteService';
 import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import type { NewNote } from '../types/note';
-// import { useDebouncedCallback } from 'use-debounce';
+import SearchBox from '../SearchBox/SearchBox';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -60,16 +61,21 @@ export default function App() {
     deleteMutation.mutate(id);
   };
 
-  // const updateSearchQuery = useDebouncedCallback(
-  //   (e: React.ChangeEvent) => setSearchQuery(),
-  //   300
-  // );
+  const updateSearchQuery = useDebouncedCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) =>
+      setSearchQuery(event.target.value),
+    300
+  );
+
+  // const updateSearchQuery = useDebouncedCallback((value: string) => {
+  //   setSearchQuery(value);
+  // }, 300);
 
   return (
     <>
       <div className={css.app}>
         <header className={css.toolbar}>
-          {/* Компонент SearchBox */}
+          <SearchBox onSearch={updateSearchQuery} value={searchQuery} />
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}
