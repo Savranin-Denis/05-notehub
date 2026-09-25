@@ -36,7 +36,7 @@ export async function createNote(
 }
 
 export async function deleteNote(id: string): Promise<Note> {
-  const response = await axios.delete<Note>(`BASE_URL/${id}`, {
+  const response = await axios.delete<Note>(`${BASE_URL}/${id}`, {
     headers: { Authorization: `Bearer ${myKey}` },
   });
   return response.data;
