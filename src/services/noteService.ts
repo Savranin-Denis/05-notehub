@@ -9,7 +9,7 @@ interface FetchNotesResponse {
   totalPages: number;
 }
 
-interface CreateNoteResponse {
+interface DeleteNoteResponse {
   note: Note;
 }
 
@@ -26,18 +26,16 @@ export async function fetchNotes(
   return response.data;
 }
 
-export async function createNote(
-  newNote: NewNote
-): Promise<CreateNoteResponse> {
-  const response = await axios.post<CreateNoteResponse>(BASE_URL, newNote, {
+export async function createNote(newNote: NewNote): Promise<Note> {
+  const response = await axios.post<Note>(BASE_URL, newNote, {
     headers: { Authorization: `Bearer ${myKey}` },
   });
   return response.data;
 }
 
 export async function deleteNote(id: string): Promise<Note> {
-  const response = await axios.delete<Note>(`${BASE_URL}/${id}`, {
+  const response = await axios.delete<DeleteNoteResponse>(`${BASE_URL}/${id}`, {
     headers: { Authorization: `Bearer ${myKey}` },
   });
-  return response.data;
+  return response.data.note;
 }
